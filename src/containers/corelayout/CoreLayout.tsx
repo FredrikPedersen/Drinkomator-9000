@@ -1,13 +1,19 @@
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Button, Container, Form, FormLabel, Nav, Navbar} from "react-bootstrap";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useEffect, useState} from "react";
 import {User} from "../../models/user.ts";
+import {initColorMode} from "../../utilities/colorModeUtilities.ts";
+import LightSwitch from "../../components/lightswitch/LightSwitch.tsx";
 
 export function CoreLayout() {
     const navigate = useNavigate()
     const location = useLocation()
     const [user, setUser] = useState<User | undefined>(undefined)
+
+    useEffect(() => {
+        initColorMode();
+    }, []);
 
     useEffect(() => {
         if (!user) {
@@ -46,12 +52,15 @@ export function CoreLayout() {
                             />
                         </Nav>
                     </Navbar.Collapse>
+                </Container>
+                <Container className="align-bottom">
                     {user ?
-                        <Navbar.Text>
+                        <Navbar.Text className={"mt-1"}>
                             Logget inn som {user.username}
                         </Navbar.Text>
                         : null
                     }
+                    <LightSwitch/>
                 </Container>
             </Navbar>
             <div className={"mt-5"}>
