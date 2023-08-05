@@ -5,12 +5,14 @@ import {useContext} from "react";
 import {OrderContext} from "../../context/OrderContext.tsx";
 import {DrinkOrder} from "../../models/drinkOrder.ts";
 import {getUsername} from "../../utilities/userUtilities.ts";
+import {useNavigate} from "react-router-dom";
 
 type Inputs = {
     drink: string,
 }
 
 export function Order() {
+    const navigate = useNavigate()
     const {addOrder} = useContext(OrderContext)
 
     const {
@@ -25,6 +27,7 @@ export function Order() {
         }
 
         addOrder(drinkOrder)
+        navigate("/queue")
     }
 
     return (
