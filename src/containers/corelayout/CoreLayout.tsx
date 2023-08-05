@@ -1,9 +1,26 @@
 import {Container, Nav, Navbar} from "react-bootstrap";
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
-
+import {useEffect, useState} from "react";
+import {User} from "../../models/user.ts";
 
 export function CoreLayout() {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [user, setUser] = useState<User | undefined>(undefined)
+
+    useEffect(() => {
+        if (!user) {
+            const userAsString = localStorage.getItem("user")
+
+            if (!userAsString) {
+                navigate("/login")
+            } else {
+                setUser(JSON.parse(userAsString))
+            }
+        }
+    }, [location.pathname, user]);
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -29,9 +46,15 @@ export function CoreLayout() {
                             />
                         </Nav>
                     </Navbar.Collapse>
+                    {user ?
+                        <Navbar.Text>
+                            Logget inn som {user.username}
+                        </Navbar.Text>
+                        : null
+                    }
                 </Container>
             </Navbar>
-            <div id="layoutChildren">
+            <div className={"mt-5"}>
                 <Outlet/>
             </div>
         </>

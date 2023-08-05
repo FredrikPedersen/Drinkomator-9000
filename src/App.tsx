@@ -1,14 +1,15 @@
-import './App.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Routes} from "./Routes.tsx";
+import {OrderProvider} from "./context/OrderContext.tsx";
 
 function App() {
-
     const router = createBrowserRouter(Routes)
 
     return (
         <>
-            <RouterProvider router={router}/>
+            <OrderProvider>
+                <RouterProvider router={router}/>
+            </OrderProvider>
         </>
     )
 }

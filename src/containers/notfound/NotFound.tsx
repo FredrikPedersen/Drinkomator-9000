@@ -4,8 +4,6 @@ import './NotFound.css'
 export default function NotFound() {
     const error = useRouteError();
 
-    console.log(error)
-
     return (
         <div id="not-found">
             <h1>HVA FAEN ER DET DU DRIVER MED!?</h1>

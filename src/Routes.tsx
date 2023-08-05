@@ -1,9 +1,10 @@
 import {CoreLayout} from "./containers/corelayout/CoreLayout.tsx";
 import NotFound from "./containers/notfound/NotFound.tsx";
 import {RouteObject} from "react-router/dist/lib/context";
-import {Queue} from "./containers/queue/Queue.tsx";
 import {Leaderboard} from "./containers/leaderboard/Leaderboard.tsx";
+import {Login} from "./containers/login/Login.tsx";
 import {Order} from "./containers/order/Order.tsx";
+import {Queue} from "./containers/queue/Queue.tsx";
 
 export const Routes: RouteObject[] = [
     {
@@ -16,12 +17,16 @@ export const Routes: RouteObject[] = [
                 element: <Order/>
             },
             {
-                path: "queue",
+                path: "/queue",
                 element: <Queue/>,
             },
             {
-                path: "leaderboard",
+                path: "/leaderboard",
                 element: <Leaderboard/>
+            },
+            {
+                path: "/login",
+                element: <Login/>
             }
         ]
     },
