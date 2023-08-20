@@ -9,7 +9,7 @@ export function Leaderboard() {
     const usernames = orders.map(drinkOrder => drinkOrder.username);
 
     //Foreach username, find the occurrence of each drink per username
-/*    usernames.forEach(username => {
+    usernames.forEach(username => {
         const drinkForUsername = orders.map(drinkOrder => {
             if (drinkOrder.username === username) {
 
@@ -17,7 +17,7 @@ export function Leaderboard() {
         })
 
         console.log(drinkForUsername)
-    })*/
+    })
 
 
     return (

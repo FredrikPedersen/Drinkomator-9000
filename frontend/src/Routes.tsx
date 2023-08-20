@@ -1,10 +1,10 @@
-import {CoreLayout} from "../../src/containers/corelayout/CoreLayout.tsx";
-import NotFound from "../../src/containers/notfound/NotFound.tsx";
+import {CoreLayout} from "./containers/corelayout/CoreLayout.tsx";
+import NotFound from "./containers/notfound/NotFound.tsx";
 import {RouteObject} from "react-router/dist/lib/context";
-import {Leaderboard} from "../../src/containers/leaderboard/Leaderboard.tsx";
-import {Login} from "../../src/containers/login/Login.tsx";
-import {Order} from "../../src/containers/order/Order.tsx";
-import {Queue} from "../../src/containers/queue/Queue.tsx";
+import {Leaderboard} from "./containers/leaderboard/Leaderboard.tsx";
+import {Login} from "./containers/login/Login.tsx";
+import {Order} from "./containers/order/Order.tsx";
+import {Queue} from "./containers/queue/Queue.tsx";
 
 export const Routes: RouteObject[] = [
     {
