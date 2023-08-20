@@ -2,9 +2,9 @@ import {Container, Nav, Navbar} from "react-bootstrap";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useEffect, useState} from "react";
-import {User} from "../../models/user.ts";
-import {initColorMode} from "../../utilities/colorModeUtilities.ts";
-import LightSwitch from "../../components/lightswitch/LightSwitch.tsx";
+import {User} from "@models/user.ts";
+import {initColorMode} from "@utilities/colorModeUtilities.ts";
+import LightSwitch from "@components/lightswitch/LightSwitch.tsx";
 
 export function CoreLayout() {
     const navigate = useNavigate()

@@ -1,5 +1,5 @@
 import {Form, FormLabel} from "react-bootstrap";
-import {COLOR_MODES, getColorMode, switchColorMode as switchColorUtil} from '../../utilities/colorModeUtilities.ts'
+import {COLOR_MODES, getColorMode, switchColorMode as switchColorUtil} from '@utilities/colorModeUtilities.ts'
 import {useMemo, useState} from "react";
 
 export default function LightSwitch() {

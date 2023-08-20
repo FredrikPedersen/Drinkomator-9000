@@ -1,6 +1,6 @@
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import {useContext} from "react";
-import {OrderContext} from "../../context/OrderContext.tsx";
+import {OrderContext} from "@context/OrderContext.tsx";
 
 export function Leaderboard() {
     const {orders, drinks} = useContext(OrderContext);

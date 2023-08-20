@@ -1,4 +1,4 @@
-import {DrinkOrder} from "../models/drinkOrder.ts";
+import {DrinkOrder} from "@models/drinkOrder.ts";
 import {createContext, ReactElement, useCallback, useReducer} from "react";
 
 type OrderState = {

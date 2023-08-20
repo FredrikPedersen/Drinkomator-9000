@@ -1,6 +1,6 @@
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Button, Form} from "react-bootstrap";
-import {ErrorMessage} from "../../components/errormessage/ErrorMessage.tsx";
+import {ErrorMessage} from "@components/errormessage/ErrorMessage.tsx";
 import "./Login.css"
 import {useNavigate} from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import {User} from "../models/user.ts";
+import {User} from "@models/user.ts";
 
 const getUser = (): User => {
     const userAsString = localStorage.getItem("user")
