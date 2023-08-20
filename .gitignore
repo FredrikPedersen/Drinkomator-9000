@@ -1,24 +1,32 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Binaries
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.war
+*.ear
+*.sar
+*.class
 
-node_modules
-dist
-dist-ssr
-*.local
+# Maven
+target/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
+.idea/
+out/
+
+# Dependencies
+node_modules/
+
+# OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# Log file
+*.log

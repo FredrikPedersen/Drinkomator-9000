@@ -2,11 +2,13 @@ import {DrinkOrder} from "../models/drinkOrder.ts";
 import {createContext, ReactElement, useCallback, useReducer} from "react";
 
 type OrderState = {
-    orders: DrinkOrder[]
+    orders: DrinkOrder[],
+    drinks: string[]
 }
 
 const initState: OrderState = {
     orders: [],
+    drinks: ["Amaretto Sprites", "White Russian", "Lemon Radler", "Moscow Mule"]
 }
 
 enum ACTION_TYPE {
@@ -38,17 +40,19 @@ const useOrderContext = (initState: OrderState) => {
             type: ACTION_TYPE.ADD_ORDER,
             payload: newOrder
         })
-    }, [])
+    }, []);
 
-    const orders = orderState.orders
+    const orders = orderState.orders;
+    const drinks = orderState.drinks;
 
-    return {orders, addOrder}
+    return {orders, drinks, addOrder}
 }
 
 type UseOrderContextType = ReturnType<typeof useOrderContext>;
 
 const initContextState: UseOrderContextType = {
     orders: initState.orders,
+    drinks: initState.drinks,
     addOrder: () => {}
 }
 

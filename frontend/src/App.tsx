@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Routes} from "./Routes.tsx";
-import {OrderProvider} from "./context/OrderContext.tsx";
+import {OrderProvider} from "../../src/context/OrderContext.tsx";
 
 function App() {
     const router = createBrowserRouter(Routes)

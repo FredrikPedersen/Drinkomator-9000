@@ -13,7 +13,7 @@ type Inputs = {
 
 export function Order() {
     const navigate = useNavigate()
-    const {addOrder} = useContext(OrderContext)
+    const {addOrder, drinks} = useContext(OrderContext)
 
     const {
         register,
@@ -34,10 +34,7 @@ export function Order() {
         <Form className="order-form" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="mb-3" controlId="formUsername">
                 <Form.Select className={"mt-1"} placeholder="Navn..." {...register("drink")}>
-                    <option>Amaretto Spritz</option>
-                    <option>White Russian</option>
-                    <option>Lemon Radler</option>
-                    <option>Moscow Mule</option>
+                    {drinks.map(drink => <option key={drink}>{drink}</option>)}
                 </Form.Select>
                 <Button className={"mt-2 order-button"} variant="primary" type="submit">Bestill</Button>
             </Form.Group>
