@@ -30,7 +30,8 @@ export const switchColorMode = () => {
 export const getColorMode = (): string => {
     const currentMode = localStorage.getItem(localStorageKey);
     if (!currentMode) {
-        throw Error()
+        setColorMode(COLOR_MODES.DARK)
+        return COLOR_MODES.DARK
     }
 
     return currentMode
