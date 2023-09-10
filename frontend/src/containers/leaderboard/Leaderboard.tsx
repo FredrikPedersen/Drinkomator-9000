@@ -30,9 +30,9 @@ export function Leaderboard() {
             orders.forEach(drinkOrder => {
                 if (drinkOrder.username === username) {
                     const drinkQuantitiesForUser = statsForUser.drinkQuantities
-                    const drinkExists = drinkQuantitiesForUser.find((drink) => drinkOrder.drinkName === drink.drinkName)
-                    if (drinkExists) {
-                        drinkExists.quantity += 1
+                    const drinkQuantity = drinkQuantitiesForUser.find((drink) => drinkOrder.drinkName === drink.drinkName)
+                    if (drinkQuantity) {
+                        drinkQuantity.quantity += 1
                     } else {
                         drinkQuantitiesForUser.push({
                             drinkName: drinkOrder.drinkName,
