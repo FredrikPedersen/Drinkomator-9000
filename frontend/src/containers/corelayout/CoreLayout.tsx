@@ -25,6 +25,10 @@ export function CoreLayout() {
                 setUser(JSON.parse(userAsString))
             }
         }
+
+        if (location.pathname === "/") {
+            navigate("/order");
+        }
     }, [location.pathname, user]);
 
     return (
