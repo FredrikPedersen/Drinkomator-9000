@@ -7,6 +7,13 @@ type DrinkStats = {
     [key: string]: number
 }
 
+const hexColors = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#d88884",
+    "#d884d4"
+]
 
 export function Leaderboard() {
     const {orders, drinks} = useContext(OrderContext);
@@ -44,7 +51,6 @@ export function Leaderboard() {
         setDrinkStats(drinksPerUser)
     }, [orders, drinks])
 
-    console.log(drinkStats)
     return (
         <div style={{width: "100%", height: "100%"}}>
             <BarChart
@@ -63,19 +69,11 @@ export function Leaderboard() {
                 <YAxis/>
                 <Tooltip/>
                 <Legend/>
-                {drinkStats.map(drinkStat => {
-                    drinkStat.drinkQuantities.map((drinks, index) => {
-                        return (
-                            <>
-                                <Bar dataKey="quantity" stackId="a" fill="#8884d8"/>
-                                <Bar dataKey="amt" stackId="a" fill="#82ca9d"/>
-                                <Bar dataKey="uv" stackId="a" fill="#ffc658"/>
-                            </>
-                        )
-                    })
-
+                {drinks.map((drink, index) => {
+                    return (
+                        <Bar dataKey={drink} stackId="a" fill={hexColors[index]} />
+                    )
                 })}
-
             </BarChart>
         </div>
     );
