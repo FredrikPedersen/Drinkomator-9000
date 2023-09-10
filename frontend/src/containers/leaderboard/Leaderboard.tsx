@@ -1,66 +1,82 @@
-import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import {useContext, useEffect, useState} from "react";
 import {OrderContext} from "@context/OrderContext.tsx";
-
-type DrinkQuantity = {
-    drinkName: string,
-    quantity: number
-}
+import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 
 type DrinkStats = {
     username: string,
-    drinkQuantities: DrinkQuantity[]
+    [key: string]: number
 }
 
+
 export function Leaderboard() {
-    const {orders} = useContext(OrderContext);
+    const {orders, drinks} = useContext(OrderContext);
     const [drinkStats, setDrinkStats] = useState<DrinkStats[]>([])
 
     //Foreach username, find the occurrence of each drink per username
-     useEffect(()  => {
+    useEffect(() => {
         //Find unique usernames
         const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
 
         const drinksPerUser = usernames.map(username => {
             const statsForUser: DrinkStats = {
                 username: username,
-                drinkQuantities: []
             };
 
             orders.forEach(drinkOrder => {
                 if (drinkOrder.username === username) {
-                    const drinkQuantitiesForUser = statsForUser.drinkQuantities
-                    const drinkQuantity = drinkQuantitiesForUser.find((drink) => drinkOrder.drinkName === drink.drinkName)
-                    if (drinkQuantity) {
-                        drinkQuantity.quantity += 1
-                    } else {
-                        drinkQuantitiesForUser.push({
-                            drinkName: drinkOrder.drinkName,
-                            quantity: 1
-                        })
-                    }
+                    drinks.forEach(drink => {
+                        if (drink === drinkOrder.drinkName) {
+                            const eksisterendeVerdi = statsForUser[drink];
+                            if (eksisterendeVerdi) {
+                                statsForUser[drink] += 1;
+                            } else {
+                                statsForUser[drink] = 1
+                            }
+                        }
+                    })
+
                 }
             })
 
             return statsForUser;
         })
 
-         setDrinkStats(drinksPerUser)
-    }, [orders])
-
+        setDrinkStats(drinksPerUser)
+    }, [orders, drinks])
 
     console.log(drinkStats)
     return (
-        <>
-            <BarChart width={300} height={500} data={drinkStats}>
+        <div style={{width: "100%", height: "100%"}}>
+            <BarChart
+                width={500}
+                height={300}
+                data={drinkStats}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
                 <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="name"/>
+                <XAxis dataKey="username"/>
                 <YAxis/>
                 <Tooltip/>
                 <Legend/>
-                <Bar dataKey="pv" fill="#8884d8"/>
-                <Bar dataKey="uv" fill="#82ca9d"/>
+                {drinkStats.map(drinkStat => {
+                    drinkStat.drinkQuantities.map((drinks, index) => {
+                        return (
+                            <>
+                                <Bar dataKey="quantity" stackId="a" fill="#8884d8"/>
+                                <Bar dataKey="amt" stackId="a" fill="#82ca9d"/>
+                                <Bar dataKey="uv" stackId="a" fill="#ffc658"/>
+                            </>
+                        )
+                    })
+
+                })}
+
             </BarChart>
-        </>
-    )
+        </div>
+    );
 }
