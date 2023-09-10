@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import {OrderContext} from "@context/OrderContext.tsx";
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 
@@ -6,14 +6,6 @@ type DrinkStats = {
     username: string,
     [key: string]: number
 }
-
-const hexColors = [
-    "#8884d8",
-    "#82ca9d",
-    "#ffc658",
-    "#d88884",
-    "#d884d4"
-]
 
 export function Leaderboard() {
     const {orders, drinks} = useContext(OrderContext);
@@ -50,6 +42,21 @@ export function Leaderboard() {
 
         setDrinkStats(drinksPerUser)
     }, [orders, drinks])
+
+    const hexColors = useMemo(() => {
+        return [
+            "#8884d8",
+            "#82ca9d",
+            "#ffc658",
+            "#d88884",
+            "#d884d4",
+            "#82cac1",
+            "#c182ca",
+            "#d88884",
+            "#91ff58",
+            "#58e4ff"
+        ]
+    }, [])
 
     return (
         <div style={{width: "100%", height: "100%"}}>
