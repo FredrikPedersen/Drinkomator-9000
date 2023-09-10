@@ -1,6 +1,7 @@
 import {useContext, useEffect, useMemo, useState} from "react";
 import {OrderContext} from "@context/OrderContext.tsx";
-import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Text} from "recharts";
+import {DrinkOrder} from "@models/drinkOrder.ts";
 
 type DrinkStats = {
     username: string,
@@ -8,11 +9,77 @@ type DrinkStats = {
 }
 
 export function Leaderboard() {
-    const {orders, drinks} = useContext(OrderContext);
+    const {drinks} = useContext(OrderContext);
     const [drinkStats, setDrinkStats] = useState<DrinkStats[]>([])
+    const chartHeight = useMemo(() => 500, [])
 
     //Foreach username, find the occurrence of each drink per username
     useEffect(() => {
+        const amaretto = "Amaretto Sprites";
+        const mule = "Moscow Mule";
+        const radler = "Lemon Radler";
+        const orders: DrinkOrder[] = [
+            {
+                username: "Thomas",
+                drinkName: mule,
+                createdDate: new Date()
+            },{
+                username: "Thomas",
+                drinkName: amaretto,
+                createdDate: new Date()
+            },
+            {
+                username: "Thomas",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Jokke",
+                drinkName: radler,
+                createdDate: new Date()
+            },
+            {
+                username: "Jokke",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Andreas",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Andreas",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Fredrik",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Mina",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Ronja",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Chris",
+                drinkName: mule,
+                createdDate: new Date()
+            },
+            {
+                username: "Martina",
+                drinkName: mule,
+                createdDate: new Date()
+            }
+        ]
+
         //Find unique usernames
         const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
 
@@ -41,7 +108,7 @@ export function Leaderboard() {
         })
 
         setDrinkStats(drinksPerUser)
-    }, [orders, drinks])
+    }, [drinks])
 
     const hexColors = useMemo(() => {
         return [
@@ -59,7 +126,7 @@ export function Leaderboard() {
     }, [])
 
     return (
-        <ResponsiveContainer width={"100%"} height={500}>
+        <ResponsiveContainer width={"100%"} height={chartHeight}>
             <BarChart
                 width={500}
                 height={300}
@@ -72,10 +139,15 @@ export function Leaderboard() {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="username"/>
+                <XAxis
+                    dataKey="username"
+                    angle={90}
+                    dy={30}
+                    dx={5}
+                />
                 <YAxis/>
                 <Tooltip/>
-                <Legend/>
+                <Legend wrapperStyle={{top: chartHeight, left: 25}}/>
                 {drinks.map((drink, index) => {
                     return (
                         <Bar dataKey={drink} stackId="a" fill={hexColors[index]} />
