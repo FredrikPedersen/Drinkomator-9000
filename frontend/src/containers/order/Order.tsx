@@ -2,7 +2,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {Button, Form} from "react-bootstrap";
 import "./Order.css";
 import {useContext} from "react";
-import {OrderContext} from "@context/OrderContext.tsx";
+import {DrinkContext} from "@context/DrinkContext.tsx";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {getUsername} from "@utilities/userUtilities.ts";
 import {useNavigate} from "react-router-dom";
@@ -13,7 +13,7 @@ type Inputs = {
 
 export function Order() {
     const navigate = useNavigate()
-    const {addOrder, drinks} = useContext(OrderContext)
+    const {drinks} = useContext(DrinkContext)
 
     const {
         register,

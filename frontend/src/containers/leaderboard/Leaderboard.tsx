@@ -1,5 +1,5 @@
 import {useContext, useEffect, useMemo, useState} from "react";
-import {OrderContext} from "@context/OrderContext.tsx";
+import {DrinkContext} from "@context/DrinkContext.tsx";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Text} from "recharts";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 
@@ -9,7 +9,7 @@ type DrinkStats = {
 }
 
 export function Leaderboard() {
-    const {drinks} = useContext(OrderContext);
+    const {drinks} = useContext(DrinkContext);
     const [drinkStats, setDrinkStats] = useState<DrinkStats[]>([])
     const chartHeight = useMemo(() => 500, [])
 

@@ -1,6 +1,5 @@
 import {Table} from "react-bootstrap";
 import {useContext, useEffect, useState} from "react";
-import {OrderContext} from "@context/OrderContext.tsx";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 
 export function Queue() {

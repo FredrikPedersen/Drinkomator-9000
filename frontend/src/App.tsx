@@ -1,15 +1,15 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Routes} from "./Routes.tsx";
-import {OrderProvider} from "@context/OrderContext.tsx";
+import {DrinkProvider} from "@context/DrinkContext.tsx";
 
 function App() {
     const router = createBrowserRouter(Routes);
 
     return (
         <>
-            <OrderProvider>
+            <DrinkProvider>
                 <RouterProvider router={router}/>
-            </OrderProvider>
+            </DrinkProvider>
         </>
     )
 }
