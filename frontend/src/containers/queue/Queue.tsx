@@ -24,7 +24,7 @@ export function Queue() {
             const orders: DrinkOrder[] = mapDocumentData<DrinkOrder>(orderQuery);
 
             return orders.sort((a, b) => {
-                return a.createdDate.getTime() - b.createdDate.getTime()
+                return a.createdDate - b.createdDate
             });
         }
 

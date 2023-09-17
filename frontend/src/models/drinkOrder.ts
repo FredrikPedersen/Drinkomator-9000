@@ -1,5 +1,5 @@
 export type DrinkOrder = {
     username: string,
     drinkName: string,
-    createdDate: Date
+    createdDate: number //Created timestamp in milliseconds
 };

@@ -27,7 +27,7 @@ export function Order() {
         const drinkOrder: DrinkOrder = {
             username: getUsername(),
             drinkName: formData.drink,
-            createdDate: new Date()
+            createdDate: new Date().getTime()
         }
 
         addDoc(orderCollection, drinkOrder).then(() => {
