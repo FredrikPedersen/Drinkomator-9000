@@ -6,6 +6,8 @@ import {DrinkContext} from "@context/DrinkContext.tsx";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {getUsername} from "@utilities/userUtilities.ts";
 import {useNavigate} from "react-router-dom";
+import {orderCollection} from "@/config/firebase.ts";
+import {addDoc} from "firebase/firestore";
 
 type Inputs = {
     drink: string,
@@ -19,15 +21,17 @@ export function Order() {
         register,
         handleSubmit,
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
+
+    const onSubmit: SubmitHandler<Inputs> = (formData) => {
         const drinkOrder: DrinkOrder = {
             username: getUsername(),
-            drinkName: data.drink,
+            drinkName: formData.drink,
             createdDate: new Date()
         }
 
-        addOrder(drinkOrder)
-        navigate("/queue")
+        addDoc(orderCollection, drinkOrder).then(() => {
+            navigate("/queue")
+        })
     }
 
     return (

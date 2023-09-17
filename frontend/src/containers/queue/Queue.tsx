@@ -1,19 +1,26 @@
 import {Table} from "react-bootstrap";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {DrinkOrder} from "@models/drinkOrder.ts";
+import {orderCollection} from "@/config/firebase.ts";
+import {getDocs} from "firebase/firestore";
+import {mapDocumentData} from "@utilities/firebaseUtilities.ts";
 
 export function Queue() {
-    const {orders} = useContext(OrderContext);
     const [sortedOrders, setSortedOrders] = useState<Array<DrinkOrder>>();
 
     useEffect(() => {
-        const sorted = orders.sort((a, b) => {
-            return a.createdDate.getTime() - b.createdDate.getTime()
-        });
+        const getOrders = async () => {
+            const orderQuery = await getDocs(orderCollection);
+            const orders: DrinkOrder[] = mapDocumentData<DrinkOrder>(orderQuery);
 
-        setSortedOrders(sorted)
+            return orders.sort((a, b) => {
+                return a.createdDate.seconds - b.createdDate.seconds
+            });
+        }
 
-    }, [orders]);
+
+        getOrders().then(sorted => setSortedOrders(sorted));
+    }, []);
 
     return (
         <Table striped bordered hover>

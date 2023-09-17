@@ -2,10 +2,29 @@ import {useContext, useEffect, useMemo, useState} from "react";
 import {DrinkContext} from "@context/DrinkContext.tsx";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Text} from "recharts";
 import {DrinkOrder} from "@models/drinkOrder.ts";
+import {getDocs} from "firebase/firestore";
+import {orderCollection} from "@/config/firebase.ts";
+import {mapDocumentData} from "@utilities/firebaseUtilities.ts";
 
-type DrinkStats = {
-    username: string,
-    [key: string]: number
+const hexColors = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#d88884",
+    "#d884d4",
+    "#82cac1",
+    "#c182ca",
+    "#d88884",
+    "#91ff58",
+    "#58e4ff"
+];
+
+interface DynamicModel<T> {
+    [key: string]: T
+}
+
+type DrinkStats = DynamicModel<number> & {
+    username: string
 }
 
 export function Leaderboard() {
@@ -15,115 +34,41 @@ export function Leaderboard() {
 
     //Foreach username, find the occurrence of each drink per username
     useEffect(() => {
-        const amaretto = "Amaretto Sprites";
-        const mule = "Moscow Mule";
-        const radler = "Lemon Radler";
-        const orders: DrinkOrder[] = [
-            {
-                username: "Thomas",
-                drinkName: mule,
-                createdDate: new Date()
-            },{
-                username: "Thomas",
-                drinkName: amaretto,
-                createdDate: new Date()
-            },
-            {
-                username: "Thomas",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Jokke",
-                drinkName: radler,
-                createdDate: new Date()
-            },
-            {
-                username: "Jokke",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Andreas",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Andreas",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Fredrik",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Mina",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Ronja",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Chris",
-                drinkName: mule,
-                createdDate: new Date()
-            },
-            {
-                username: "Martina",
-                drinkName: mule,
-                createdDate: new Date()
-            }
-        ]
+        const getOrders = async () => {
+            const orderQuery = await getDocs(orderCollection);
+            return mapDocumentData<DrinkOrder>(orderQuery);
+        }
 
-        //Find unique usernames
-        const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
+        getOrders().then(orders => {
+            //Find unique usernames
+            const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
 
-        const drinksPerUser = usernames.map(username => {
-            const statsForUser: DrinkStats = {
-                username: username,
-            };
+            const drinksPerUser = usernames.map(username => {
+                const statsForUser: DrinkStats = {
+                    username: username,
+                };
 
-            orders.forEach(drinkOrder => {
-                if (drinkOrder.username === username) {
-                    drinks.forEach(drink => {
-                        if (drink === drinkOrder.drinkName) {
-                            const eksisterendeVerdi = statsForUser[drink];
-                            if (eksisterendeVerdi) {
-                                statsForUser[drink] += 1;
-                            } else {
-                                statsForUser[drink] = 1
+                orders.forEach(drinkOrder => {
+                    if (drinkOrder.username === username) {
+                        drinks.forEach(drink => {
+                            if (drink === drinkOrder.drinkName) {
+                                const existingValue = statsForUser[drink];
+                                if (existingValue) {
+                                    statsForUser[drink] += 1;
+                                } else {
+                                    statsForUser[drink] = 1
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
+                })
 
-                }
+                return statsForUser;
             })
 
-            return statsForUser;
+            setDrinkStats(drinksPerUser)
         })
-
-        setDrinkStats(drinksPerUser)
     }, [drinks])
-
-    const hexColors = useMemo(() => {
-        return [
-            "#8884d8",
-            "#82ca9d",
-            "#ffc658",
-            "#d88884",
-            "#d884d4",
-            "#82cac1",
-            "#c182ca",
-            "#d88884",
-            "#91ff58",
-            "#58e4ff"
-        ]
-    }, [])
 
     return (
         <ResponsiveContainer width={"100%"} height={chartHeight}>
@@ -150,7 +95,7 @@ export function Leaderboard() {
                 <Legend wrapperStyle={{top: chartHeight, left: 25}}/>
                 {drinks.map((drink, index) => {
                     return (
-                        <Bar dataKey={drink} stackId="a" fill={hexColors[index]} />
+                        <Bar dataKey={drink} stackId="a" fill={hexColors[index]}/>
                     )
                 })}
             </BarChart>
