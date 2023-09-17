@@ -3,6 +3,7 @@ import {Button, Form} from "react-bootstrap";
 import {ErrorMessage} from "@components/errormessage/ErrorMessage.tsx";
 import "./Login.css"
 import {useNavigate} from "react-router-dom";
+import {ROLE, USER_LS_KEY} from "@models/user.ts";
 
 type Inputs = {
     username: string,
@@ -18,9 +19,17 @@ export function Login() {
     } = useForm<Inputs>()
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        if (data.username && data.username.trim() !== "") {
-            localStorage.setItem("user", JSON.stringify({username: data.username}))
-            navigate("/order")
+        const username = data.username;
+        if (username && username.trim() !== "") {
+
+            if (username.toUpperCase() === "Mina".toUpperCase()) {
+                localStorage.setItem(USER_LS_KEY, JSON.stringify({username: username, role: ROLE.ADMIN}))
+                navigate(ROUTES.QUEUE)
+            } else {
+                localStorage.setItem(USER_LS_KEY, JSON.stringify({username: username, role: ROLE.USER}))
+                navigate(ROUTES.ORDER)
+            }
+
         } else {
             setError("username", {type: "manual", message: "Brukernavnet kan ikke være tomt!"})
         }

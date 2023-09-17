@@ -55,6 +55,17 @@ export function CoreLayout() {
                                 to={ROUTES.LEADERBOARD}
                                 children={<Nav.Link>Ledertavle</Nav.Link>}
                             />
+                            {user ?
+                                <LinkContainer
+                                    onClick={() => {
+                                        localStorage.removeItem(USER_LS_KEY);
+                                        setUser(undefined)
+                                    }}
+                                    to={ROUTES.LOGIN}
+                                    children={<Nav.Link>Logg ut</Nav.Link>}
+                                />
+                                : null
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

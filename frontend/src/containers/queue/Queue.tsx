@@ -1,12 +1,17 @@
-import {Table} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {Button, Table} from "react-bootstrap";
+import {useEffect, useMemo, useState} from "react";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {orderCollection} from "@/config/firebase.ts";
 import {getDocs} from "firebase/firestore";
 import {mapDocumentData} from "@utilities/firebaseUtilities.ts";
+import {ROLE, User, USER_LS_KEY} from "@models/user.ts";
 
 export function Queue() {
     const [sortedOrders, setSortedOrders] = useState<Array<DrinkOrder>>();
+    const isAdmin = useMemo(() => {
+        const user: User = JSON.parse(localStorage.getItem(USER_LS_KEY)!);
+        return user.role === ROLE.ADMIN;
+    }, [])
 
     useEffect(() => {
         const getOrders = async () => {
@@ -28,6 +33,10 @@ export function Queue() {
                 <th>#</th>
                 <th>Brukernavn</th>
                 <th>Drink</th>
+                {isAdmin ?
+                    <th>Actions</th>
+                    : null
+                }
             </tr>
             </thead>
             <tbody>
@@ -37,6 +46,13 @@ export function Queue() {
                         <td>{index + 1}</td>
                         <td>{queueRow.username}</td>
                         <td>{queueRow.drinkName}</td>
+                        {isAdmin ?
+                                <td>
+                                    <Button variant="success" style={{width: "100%"}}>Done</Button>
+                                    <Button variant="danger" style={{width: "100%"}}>Delete</Button>
+                                </td>
+                            : null
+                        }
                     </tr>
                 )
             })}
