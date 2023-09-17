@@ -18,7 +18,6 @@ export function Queue() {
             });
         }
 
-
         getOrders().then(sorted => setSortedOrders(sorted));
     }, []);
 

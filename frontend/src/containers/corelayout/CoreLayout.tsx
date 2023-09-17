@@ -2,9 +2,10 @@ import {Container, Nav, Navbar} from "react-bootstrap";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
 import {useEffect, useState} from "react";
-import {User} from "@models/user.ts";
+import {User, USER_LS_KEY} from "@models/user.ts";
 import {initColorMode} from "@utilities/colorModeUtilities.ts";
 import LightSwitch from "@components/lightswitch/LightSwitch.tsx";
+import {ROUTES} from "@/Routes.tsx";
 
 export function CoreLayout() {
     const navigate = useNavigate()
@@ -17,17 +18,17 @@ export function CoreLayout() {
 
     useEffect(() => {
         if (!user) {
-            const userAsString = localStorage.getItem("user")
+            const userAsString = localStorage.getItem(USER_LS_KEY)
 
             if (!userAsString) {
-                navigate("/login")
+                navigate(ROUTES.LOGIN)
             } else {
                 setUser(JSON.parse(userAsString))
             }
         }
 
-        if (location.pathname === "/") {
-            navigate("/order");
+        if (location.pathname === ROUTES.ROOT) {
+            navigate(ROUTES.ORDER);
         }
     }, [location.pathname, user]);
 
@@ -43,15 +44,15 @@ export function CoreLayout() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <LinkContainer
-                                to={"/order"}
+                                to={ROUTES.ORDER}
                                 children={<Nav.Link>Bestill</Nav.Link>}
                             />
                             <LinkContainer
-                                to={"/queue"}
+                                to={ROUTES.QUEUE}
                                 children={<Nav.Link>Kø</Nav.Link>}
                             />
                             <LinkContainer
-                                to={"/leaderboard"}
+                                to={ROUTES.LEADERBOARD}
                                 children={<Nav.Link>Ledertavle</Nav.Link>}
                             />
                         </Nav>

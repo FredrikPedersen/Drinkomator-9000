@@ -6,26 +6,34 @@ import {Login} from "./containers/login/Login.tsx";
 import {Order} from "./containers/order/Order.tsx";
 import {Queue} from "./containers/queue/Queue.tsx";
 
+export enum ROUTES {
+    ROOT= "/",
+    ORDER = "/order",
+    QUEUE = "/queue",
+    LEADERBOARD = "/leaderboard",
+    LOGIN = "/login"
+}
+
 export const Routes: RouteObject[] = [
     {
-        path: "/",
+        path: ROUTES.ROOT,
         element: <CoreLayout/>,
         errorElement: <NotFound/>,
         children: [
             {
-                path: "/order",
+                path: ROUTES.ORDER,
                 element: <Order/>
             },
             {
-                path: "/queue",
+                path: ROUTES.QUEUE,
                 element: <Queue/>,
             },
             {
-                path: "/leaderboard",
+                path: ROUTES.LEADERBOARD,
                 element: <Leaderboard/>
             },
             {
-                path: "/login",
+                path: ROUTES.LOGIN,
                 element: <Login/>
             }
         ]
