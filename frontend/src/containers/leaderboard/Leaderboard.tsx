@@ -39,6 +39,7 @@ export function Leaderboard() {
             return mapDocumentData<DrinkOrder>(orderQuery);
         }
 
+        //TODO This complexity can be reduced by having a separate stats-table in Firebase and moving done orders there
         getOrders().then(orders => {
             //Find unique usernames
             const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];

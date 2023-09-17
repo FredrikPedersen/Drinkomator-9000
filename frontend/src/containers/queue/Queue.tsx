@@ -18,12 +18,15 @@ export function Queue() {
         return false;
     }, [])
 
+    //TODO Can we move the isDone part of the query to Firebase in order to reduce size of HTTP payload and clientside workload?
     useEffect(() => {
         const getOrders = async () => {
             const orderQuery = await getDocs(orderCollection);
             const orders: DrinkOrder[] = mapDocumentData<DrinkOrder>(orderQuery);
 
-            return orders.sort((a, b) => {
+            return orders
+                .filter(drinkOrder => !drinkOrder.isDone)
+                .sort((a, b) => {
                 return a.createdDate - b.createdDate
             });
         }

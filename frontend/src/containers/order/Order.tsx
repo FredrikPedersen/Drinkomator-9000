@@ -27,6 +27,7 @@ export function Order() {
         const drinkOrder: DrinkOrder = {
             username: getUsername(),
             drinkName: formData.drink,
+            isDone: false,
             createdDate: new Date().getTime()
         }
 
