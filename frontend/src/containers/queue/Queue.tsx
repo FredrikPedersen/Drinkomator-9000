@@ -9,8 +9,13 @@ import {ROLE, User, USER_LS_KEY} from "@models/user.ts";
 export function Queue() {
     const [sortedOrders, setSortedOrders] = useState<Array<DrinkOrder>>();
     const isAdmin = useMemo(() => {
-        const user: User = JSON.parse(localStorage.getItem(USER_LS_KEY)!);
-        return user.role === ROLE.ADMIN;
+        const userAsString = localStorage.getItem(USER_LS_KEY);
+        if (userAsString) {
+            const user: User = JSON.parse(localStorage.getItem(USER_LS_KEY)!);
+            return user.role === ROLE.ADMIN;
+        }
+
+        return false;
     }, [])
 
     useEffect(() => {
@@ -19,7 +24,7 @@ export function Queue() {
             const orders: DrinkOrder[] = mapDocumentData<DrinkOrder>(orderQuery);
 
             return orders.sort((a, b) => {
-                return a.createdDate.seconds - b.createdDate.seconds
+                return a.createdDate.getTime() - b.createdDate.getTime()
             });
         }
 

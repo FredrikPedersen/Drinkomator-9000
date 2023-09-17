@@ -2,7 +2,6 @@
 import {initializeApp} from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 import {collection} from "firebase/firestore";
-import firebase from "firebase/compat/app";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -21,6 +20,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
 export const orderCollection = collection(firestore, "order");
-
-//Firebase types to be used in React-components has to be exported here
-export const firebaseTimestamp = firebase.firestore.Timestamp;

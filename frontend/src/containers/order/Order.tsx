@@ -6,7 +6,7 @@ import {DrinkContext} from "@context/DrinkContext.tsx";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {getUsername} from "@utilities/userUtilities.ts";
 import {useNavigate} from "react-router-dom";
-import {orderCollection, firebaseTimestamp} from "@/config/firebase.ts";
+import {orderCollection} from "@/config/firebase.ts";
 import {addDoc} from "firebase/firestore";
 import {ROUTES} from "@/Routes.tsx";
 
@@ -27,7 +27,7 @@ export function Order() {
         const drinkOrder: DrinkOrder = {
             username: getUsername(),
             drinkName: formData.drink,
-            createdDate: firebaseTimestamp.now()
+            createdDate: new Date()
         }
 
         addDoc(orderCollection, drinkOrder).then(() => {
