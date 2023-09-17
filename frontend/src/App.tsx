@@ -3,7 +3,7 @@ import {Routes} from "./Routes.tsx";
 import {OrderProvider} from "@context/OrderContext.tsx";
 
 function App() {
-    const router = createBrowserRouter(Routes)
+    const router = createBrowserRouter(Routes);
 
     return (
         <>
