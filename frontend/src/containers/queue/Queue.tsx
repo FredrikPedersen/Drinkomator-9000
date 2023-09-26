@@ -71,8 +71,8 @@ export function Queue() {
                         <td>{queueRow.drinkName}</td>
                         {isAdmin ?
                                 <td>
-                                    <Button variant="success" style={{width: "100%"}} onClick={() => markAsDone(queueRow.id)}>Ferdig</Button>
-                                    <Button variant="danger" style={{width: "100%"}} onClick={() => deleteOrder(queueRow.id)}>Slett</Button>
+                                    <Button variant="success" style={{width: "100%"}} onClick={() => markAsDone(queueRow.id!)}>Ferdig</Button>
+                                    <Button variant="danger" style={{width: "100%"}} onClick={() => deleteOrder(queueRow.id!)}>Slett</Button>
                                 </td>
                             : null
                         }
