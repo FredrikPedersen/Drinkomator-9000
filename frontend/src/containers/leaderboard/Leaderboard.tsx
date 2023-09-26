@@ -1,6 +1,6 @@
 import {useContext, useEffect, useMemo, useState} from "react";
 import {DrinkContext} from "@context/DrinkContext.tsx";
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Text} from "recharts";
+import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {getDocs} from "firebase/firestore";
 import {orderCollection} from "@/config/firebase.ts";
@@ -39,7 +39,7 @@ export function Leaderboard() {
             return mapDocumentData<DrinkOrder>(orderQuery);
         }
 
-        //TODO This complexity can be reduced by having a separate stats-table in Firebase and moving done orders there
+        //TODO This complexity can be reduced by having a separate stats-table in Firebase and moving done orders there on the format we expect
         getOrders().then(orders => {
             //Find unique usernames
             const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
@@ -49,7 +49,7 @@ export function Leaderboard() {
                     username: username,
                 };
 
-                orders.forEach(drinkOrder => {
+                orders.filter(drinkOrder => drinkOrder.isDone).forEach(drinkOrder => {
                     if (drinkOrder.username === username) {
                         drinks.forEach(drink => {
                             if (drink === drinkOrder.drinkName) {
@@ -96,7 +96,7 @@ export function Leaderboard() {
                 <Legend wrapperStyle={{top: chartHeight, left: 25}}/>
                 {drinks.map((drink, index) => {
                     return (
-                        <Bar dataKey={drink} stackId="a" fill={hexColors[index]}/>
+                        <Bar key={drink + index} dataKey={drink} stackId="a" fill={hexColors[index]}/>
                     )
                 })}
             </BarChart>
