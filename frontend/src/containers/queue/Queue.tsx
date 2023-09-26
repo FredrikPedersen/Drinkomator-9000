@@ -23,14 +23,12 @@ export function Queue() {
         getOrders().then(sorted => setSortedOrders(sorted));
     }, []);
 
-    const markAsDone = useCallback(async (id: string) => {
+    const markAsDone = useCallback( async (id: string) => {
         const drinkOrderDoc = createOrderDoc(id);
         const newField = {isDone: true}
-        updateDoc(drinkOrderDoc, newField)
-            .then(() => {
-                getOrders()
-                    .then(sorted => setSortedOrders(sorted))
-            })
+        await updateDoc(drinkOrderDoc, newField);
+        const sorted = await getOrders()
+        setSortedOrders(sorted)
     }, [])
 
     const getOrders = useCallback(async () => {
