@@ -1,5 +1,5 @@
 export type DrinkOrder = {
-    id: number,
+    id: string,
     username: string,
     drinkName: string,
     isDone: boolean,
