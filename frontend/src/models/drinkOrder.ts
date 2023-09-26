@@ -1,7 +1,9 @@
-export type DrinkOrder = {
-    id: string,
+import {FirebaseEntity} from "@models/firebaseEntity.ts";
+
+type DrinkOrderProperties = {
     username: string,
     drinkName: string,
-    isDone: boolean,
-    createdDate: number //Created timestamp in milliseconds
+    isDone: boolean
 };
+
+export type DrinkOrder = FirebaseEntity & DrinkOrderProperties
