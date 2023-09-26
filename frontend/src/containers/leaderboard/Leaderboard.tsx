@@ -6,19 +6,6 @@ import {getDocs} from "firebase/firestore";
 import {orderCollection} from "@/config/firebase.ts";
 import {mapDocumentData} from "@utilities/firebaseUtilities.ts";
 
-const hexColors = [
-    "#8884d8",
-    "#82ca9d",
-    "#ffc658",
-    "#d88884",
-    "#d884d4",
-    "#82cac1",
-    "#c182ca",
-    "#d88884",
-    "#91ff58",
-    "#58e4ff"
-];
-
 interface DynamicModel<T> {
     [key: string]: T
 }
@@ -52,12 +39,13 @@ export function Leaderboard() {
                 orders.filter(drinkOrder => drinkOrder.isDone).forEach(drinkOrder => {
                     if (drinkOrder.username === username) {
                         drinks.forEach(drink => {
-                            if (drink === drinkOrder.drinkName) {
-                                const existingValue = statsForUser[drink];
+                            const drinkName = drink.name
+                            if (drinkName === drinkOrder.drinkName) {
+                                const existingValue = statsForUser[drinkName];
                                 if (existingValue) {
-                                    statsForUser[drink] += 1;
+                                    statsForUser[drinkName] += 1;
                                 } else {
-                                    statsForUser[drink] = 1
+                                    statsForUser[drinkName] = 1
                                 }
                             }
                         })
@@ -96,7 +84,7 @@ export function Leaderboard() {
                 <Legend wrapperStyle={{top: chartHeight, left: 25}}/>
                 {drinks.map((drink, index) => {
                     return (
-                        <Bar key={drink + index} dataKey={drink} stackId="a" fill={hexColors[index]}/>
+                        <Bar key={drink.name + index} dataKey={drink.name} stackId="a" fill={drink.hexColor}/>
                     )
                 })}
             </BarChart>

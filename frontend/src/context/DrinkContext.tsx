@@ -1,11 +1,19 @@
 import {createContext, ReactElement, useReducer} from "react";
+import {Drink} from "@models/drink.ts";
 
 type DrinkState = {
-    drinks: string[]
+    drinks: Drink[]
 }
 
 const initState: DrinkState = {
-    drinks: ["Amaretto Sprites", "White Russian", "Lemon Radler", "Moscow Mule"]
+    drinks: [
+        {name: "Amaretto Sprites", hexColor: "#8884d8"},
+        {name: "White Russian", hexColor: "#82ca9d"},
+        {name: "Lemon Radler", hexColor: "#ffc658"},
+        {name: "Moscow Mule", hexColor: "#d88884"},
+        {name: "Gin & Tonic", hexColor: "#d884d4"},
+        {name: "Minttu Shot", hexColor: "#82cac1"}
+    ]
 }
 
 enum ACTION_TYPE {

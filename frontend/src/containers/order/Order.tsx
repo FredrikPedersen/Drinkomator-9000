@@ -40,7 +40,7 @@ export function Order() {
         <Form className="order-form" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="mb-3" controlId="formUsername">
                 <Form.Select className={"mt-1"} placeholder="Navn..." {...register("drink")}>
-                    {drinks.map(drink => <option key={drink}>{drink}</option>)}
+                    {drinks.map(drink => <option key={drink.name}>{drink.name}</option>)}
                 </Form.Select>
                 <Button className={"mt-2 order-button"} variant="primary" type="submit">Bestill</Button>
             </Form.Group>
