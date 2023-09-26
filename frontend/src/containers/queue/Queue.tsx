@@ -2,7 +2,7 @@ import {Button, Table} from "react-bootstrap";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {orderCollection} from "@/config/firebase.ts";
-import {getDocs, updateDoc} from "firebase/firestore";
+import {deleteDoc, getDocs, updateDoc} from "firebase/firestore";
 import {createOrderDoc, mapDocumentData} from "@utilities/firebaseUtilities.ts";
 import {ROLE, User, USER_LS_KEY} from "@models/user.ts";
 
@@ -23,14 +23,6 @@ export function Queue() {
         getOrders().then(sorted => setSortedOrders(sorted));
     }, []);
 
-    const markAsDone = useCallback( async (id: string) => {
-        const drinkOrderDoc = createOrderDoc(id);
-        const newField = {isDone: true}
-        await updateDoc(drinkOrderDoc, newField);
-        const sorted = await getOrders()
-        setSortedOrders(sorted)
-    }, [])
-
     const getOrders = useCallback(async () => {
         const orderQuery = await getDocs(orderCollection);
         const orders: DrinkOrder[] = mapDocumentData<DrinkOrder>(orderQuery);
@@ -42,6 +34,21 @@ export function Queue() {
             });
     }, [])
 
+    const markAsDone = useCallback( async (id: string) => {
+        const drinkOrderDoc = createOrderDoc(id);
+        const newField = {isDone: true}
+        await updateDoc(drinkOrderDoc, newField);
+        const sorted = await getOrders()
+        setSortedOrders(sorted)
+    }, [getOrders])
+
+    const deleteOrder = useCallback(async (id: string)=> {
+        const drinkOrderDoc = createOrderDoc(id)
+        await deleteDoc(drinkOrderDoc)
+        const sorted = await getOrders()
+        setSortedOrders(sorted)
+    }, [getOrders])
+
     return (
         <Table striped bordered hover>
             <thead>
@@ -50,7 +57,7 @@ export function Queue() {
                 <th>Brukernavn</th>
                 <th>Drink</th>
                 {isAdmin ?
-                    <th>Actions</th>
+                    <th>Handlinger</th>
                     : null
                 }
             </tr>
@@ -64,8 +71,8 @@ export function Queue() {
                         <td>{queueRow.drinkName}</td>
                         {isAdmin ?
                                 <td>
-                                    <Button variant="success" style={{width: "100%"}} onClick={() => markAsDone(queueRow.id)}>Done</Button>
-                                    <Button variant="danger" style={{width: "100%"}}>Delete</Button>
+                                    <Button variant="success" style={{width: "100%"}} onClick={() => markAsDone(queueRow.id)}>Ferdig</Button>
+                                    <Button variant="danger" style={{width: "100%"}} onClick={() => deleteOrder(queueRow.id)}>Slett</Button>
                                 </td>
                             : null
                         }
