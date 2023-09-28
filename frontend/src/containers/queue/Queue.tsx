@@ -5,9 +5,11 @@ import {orderCollection} from "@/config/firebase.ts";
 import {deleteDoc, getDocs, updateDoc} from "firebase/firestore";
 import {createOrderDoc, mapDocumentData} from "@utilities/firebaseUtilities.ts";
 import {ROLE, User, USER_LS_KEY} from "@models/user.ts";
+import {useInterval} from "@/hooks/usePolling.ts";
 
 export function Queue() {
     const [sortedOrders, setSortedOrders] = useState<Array<DrinkOrder>>();
+
     const isAdmin = useMemo(() => {
         const userAsString = localStorage.getItem(USER_LS_KEY);
         if (userAsString) {
@@ -17,10 +19,6 @@ export function Queue() {
 
         return false;
     }, [])
-
-    useEffect(() => {
-        getOrders().then(sorted => setSortedOrders(sorted));
-    }, []);
 
     const getOrders = useCallback(async () => {
         const orderQuery = await getDocs(orderCollection);
@@ -32,6 +30,14 @@ export function Queue() {
                 return a.createdDate - b.createdDate
             });
     }, [])
+
+    useEffect(() => {
+        getOrders().then(sorted => setSortedOrders(sorted));
+    }, [getOrders]);
+
+    useInterval( () => {
+        getOrders().then(sorted => setSortedOrders(sorted));
+    })
 
     const markAsDone = useCallback( async (id: string) => {
         const drinkOrderDoc = createOrderDoc(id);

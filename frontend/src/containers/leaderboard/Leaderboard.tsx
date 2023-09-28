@@ -1,10 +1,11 @@
-import {useContext, useEffect, useMemo, useState} from "react";
+import {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {DrinkContext} from "@context/DrinkContext.tsx";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {DrinkOrder} from "@models/drinkOrder.ts";
 import {getDocs} from "firebase/firestore";
 import {orderCollection} from "@/config/firebase.ts";
 import {mapDocumentData} from "@utilities/firebaseUtilities.ts";
+import {useInterval} from "@/hooks/usePolling.ts";
 
 interface DynamicModel<T> {
     [key: string]: T
@@ -20,43 +21,48 @@ export function Leaderboard() {
     const chartHeight = useMemo(() => 500, [])
 
     //Foreach username, find the occurrence of each drink per username
-    useEffect(() => {
-        const getOrders = async () => {
-            const orderQuery = await getDocs(orderCollection);
-            return mapDocumentData<DrinkOrder>(orderQuery);
-        }
+    const getOrders = useCallback(async () => {
+        const orderQuery = await getDocs(orderCollection);
+        return mapDocumentData<DrinkOrder>(orderQuery);
+    }, [])
 
-        getOrders().then(orders => {
-            //Find unique usernames
-            const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
+    const createStatistics = useCallback(async () => {
+        const orders = await getOrders()
+        //Find unique usernames
+        const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
 
-            const drinksPerUser = usernames.map(username => {
-                const statsForUser: DrinkStats = {
-                    username: username,
-                };
+        const drinksPerUser = usernames.map(username => {
+            const statsForUser: DrinkStats = {username: username};
 
-                orders.filter(drinkOrder => drinkOrder.isDone).forEach(drinkOrder => {
-                    if (drinkOrder.username === username) {
-                        drinks.forEach(drink => {
-                            const drinkName = drink.name
-                            if (drinkName === drinkOrder.drinkName) {
-                                const existingValue = statsForUser[drinkName];
-                                if (existingValue) {
-                                    statsForUser[drinkName] += 1;
-                                } else {
-                                    statsForUser[drinkName] = 1
-                                }
+            orders.filter(drinkOrder => drinkOrder.isDone).forEach(drinkOrder => {
+                if (drinkOrder.username === username) {
+                    drinks.forEach(drink => {
+                        const drinkName = drink.name
+                        if (drinkName === drinkOrder.drinkName) {
+                            const existingValue = statsForUser[drinkName];
+                            if (existingValue) {
+                                statsForUser[drinkName] += 1;
+                            } else {
+                                statsForUser[drinkName] = 1
                             }
-                        })
-                    }
-                })
-
-                return statsForUser;
+                        }
+                    })
+                }
             })
 
-            setDrinkStats(drinksPerUser)
+            return statsForUser;
         })
-    }, [drinks])
+
+        return drinksPerUser
+    }, [getOrders])
+
+    useEffect(() => {
+        createStatistics().then((stats) => setDrinkStats(stats))
+    }, [createStatistics])
+
+    useInterval( () => {
+        createStatistics().then((stats) => setDrinkStats(stats))
+    })
 
     return (
         <ResponsiveContainer width={"100%"} height={chartHeight}>
