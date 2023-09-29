@@ -39,8 +39,8 @@ export function Login() {
     return (
         <Form className="login-form" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="mb-3" controlId="formUsername">
-                <Form.Control className={"mt-1"} placeholder="Navn..." {...register("username", {required: true, minLength: 1})} />
-                {errors.username && <ErrorMessage text={"Du må skrive inn noe her da, løk"} size={"h6"}/>}
+                <Form.Control className={"mt-1"} placeholder="Navn..." {...register("username", {required: true, minLength: 1, maxLength: 22})} />
+                {errors.username && <ErrorMessage text={"Du må skrive inn mellom 1 og 22 tegn, løk"} size={"h6"}/>}
                 <Button className={"mt-2 login-button"} variant="primary" type="submit">Logg Inn</Button>
             </Form.Group>
         </Form>
