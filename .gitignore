@@ -25,6 +25,9 @@ out/
 # Dependencies
 node_modules/
 
+# Build Folders
+dist/
+
 # OS
 .DS_Store
 
