@@ -62,7 +62,7 @@ export function Leaderboard() {
 
     useInterval( () => {
         createStatistics().then((stats) => setDrinkStats(stats))
-    })
+    },300000)
 
     return (
         <ResponsiveContainer width={"100%"} height={chartHeight}>
