@@ -22,6 +22,7 @@ export function Queue() {
 
     const getOrders = useCallback(async () => {
         const orderQuery = await getDocs(orderCollection);
+        // @ts-ignore - Problems due to a generic
         const orders: DrinkOrder[] = mapDocumentData<DrinkOrder>(orderQuery);
 
         return orders

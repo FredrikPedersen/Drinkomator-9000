@@ -23,6 +23,7 @@ export function Leaderboard() {
     //Foreach username, find the occurrence of each drink per username
     const getOrders = useCallback(async () => {
         const orderQuery = await getDocs(orderCollection);
+        // @ts-ignore - Problems due to a generic
         return mapDocumentData<DrinkOrder>(orderQuery);
     }, [])
 
@@ -32,6 +33,7 @@ export function Leaderboard() {
         const usernames = [...new Set(orders.map(drinkOrder => drinkOrder.username))];
 
         const drinksPerUser = usernames.map(username => {
+            // @ts-ignore - This whole logic will be moved to a backend
             const statsForUser: DrinkStats = {username: username};
 
             orders.filter(drinkOrder => drinkOrder.isDone).forEach(drinkOrder => {
